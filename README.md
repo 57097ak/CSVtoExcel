@@ -18,8 +18,8 @@ To get started with this project, follow these steps:
 1. **Clone the Repository**
 
     ```bash
-    git clone https://github.com/yourusername/csv-to-excel-table.git
-    cd csv-to-excel-table
+    git clone https://github.com/yourusername/CSVtoExcel.git
+    cd CSVtoExcel
     ```
 
 2. **Install Dependencies**
