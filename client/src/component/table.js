@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import * as XLSX from 'xlsx';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import { FaSort, FaSortUp, FaSortDown } from 'react-icons/fa';
 
 const CsvToExcelConverter = () => {
   const [data, setData] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
+  const [sortConfig, setSortConfig] = useState({ key: '', direction: '' });
 
   const columns = ['Product name', 'Color', 'Category', 'Price'];
 
@@ -35,6 +39,26 @@ const CsvToExcelConverter = () => {
     });
   };
 
+  const handleSort = (key) => {
+    let direction = 'ascending';
+    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+      direction = 'descending';
+    }
+
+    const sortedData = [...data].sort((a, b) => {
+      if (a[key] < b[key]) {
+        return direction === 'ascending' ? -1 : 1;
+      }
+      if (a[key] > b[key]) {
+        return direction === 'ascending' ? 1 : -1;
+      }
+      return 0;
+    });
+
+    setSortConfig({ key, direction });
+    setData(sortedData);
+  };
+
   const handleConvertToXLSX = () => {
     const rowsToExport = selectedRows.length > 0
       ? selectedRows.map(index => data[index])
@@ -48,6 +72,34 @@ const CsvToExcelConverter = () => {
     XLSX.writeFile(wb, 'table-data.xlsx');
   };
 
+  const handleConvertToPDF = () => {
+    const doc = new jsPDF();
+    const rowsToExport = selectedRows.length > 0
+      ? selectedRows.map(index => data[index])
+      : data;
+
+    if (rowsToExport.length === 0) return;
+
+    const tableData = rowsToExport.map(row => columns.map(col => row[col]));
+    autoTable(doc, {
+      head: [columns],
+      body: tableData,
+    });
+    doc.save('table-data.pdf');
+  };
+
+  const getSortIcon = (column) => {
+    if (sortConfig.key === column) {
+      if (sortConfig.direction === 'ascending') {
+        return <FaSortUp className="ml-2 inline-block" />;
+      }
+      if (sortConfig.direction === 'descending') {
+        return <FaSortDown className="ml-2 inline-block" />;
+      }
+    }
+    return <FaSort className="ml-2 inline-block" />;
+  };
+
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg p-4">
       <input 
@@ -56,12 +108,18 @@ const CsvToExcelConverter = () => {
         onChange={handleFileChange} 
         className="mb-4 p-2 border border-gray-300 rounded"
       />
-      <div className="mb-4">
+      <div className="mb-4 flex gap-4">
         <button
           onClick={handleConvertToXLSX}
           className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
         >
-          Convert Selected Rows to XLSX
+          Convert to XLSX
+        </button>
+        <button
+          onClick={handleConvertToPDF}
+          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+        >
+          Convert to PDF
         </button>
       </div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -72,8 +130,14 @@ const CsvToExcelConverter = () => {
                 Select
               </th>
               {columns.map((column) => (
-                <th key={column} scope="col" className="px-6 py-3">
+                <th 
+                  key={column} 
+                  scope="col" 
+                  className="px-6 py-3 cursor-pointer"
+                  onClick={() => handleSort(column)}
+                >
                   {column}
+                  {getSortIcon(column)}
                 </th>
               ))}
             </tr>
