@@ -18,8 +18,8 @@ To get started with this project, follow these steps:
 1. **Clone the Repository**
 
     ```bash
-    git clone https://github.com/yourusername/csv-to-excel-table.git
-    cd csv-to-excel-table
+    git clone https://github.com/yourusername/CSVtoExcel.git
+    cd CSVtoExcel
     ```
 
 2. **Install Dependencies**
@@ -78,26 +78,3 @@ The `Table` component displays a table with the following functionalities:
 - **`tailwind.config.js`** - Tailwind CSS configuration file.
 - **`package.json`** - Project metadata and dependencies.
 
-## Example Usage
-
-Here is an example of how to use the `Table` component:
-
-```jsx
-import React from 'react';
-import Table from './Table';
-
-const data = [
-  { name: 'Apple MacBook Pro 17"', color: 'Silver', category: 'Laptop', price: '$2999' },
-  { name: 'Microsoft Surface Pro', color: 'White', category: 'Laptop PC', price: '$1999' },
-  // Add more rows as needed
-];
-
-function App() {
-  return (
-    <div className="p-4">
-      <Table data={data} />
-    </div>
-  );
-}
-
-export default App;
