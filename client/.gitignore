@@ -21,3 +21,51 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+# Node modules
+node_modules/
+
+# Build output
+build/
+dist/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+jspm_packages/
+
+# Environment files
+.env
+.env.*.local
+
+# IDE files
+.vscode/
+.idea/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Optional npm cache directory
+.npm
+
+# Optional yarn cache directory
+.yarn-cache
+
+# Optional eslint cache
+.eslintcache
+
+# Optional coverage directory
+coverage/
+
+# Optional karma configuration
+karma.conf.js
+
+# Parcel-bundler cache
+.cache/
+
+# React Native
+.expo/
